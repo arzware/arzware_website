@@ -1,0 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #050505;
+  --color-surface: #0b0b0b;
+  --color-surface-2: #111111;
+  --color-text: #f5f5f5;
+  --color-muted: #a1a1a1;
+  --color-accent: #d4af37;
+  --color-accent-light: #e5e5e5;
+  --ease-luxury: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 0.8s;
+  --duration-medium: 1.2s;
+  --duration-slow: 1.8s;
+  --duration-cinematic: 2.4s;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: var(--color-bg);
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  ::selection {
+    background: rgba(212, 175, 55, 0.25);
+    color: var(--color-text);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+}
+
+@layer components {
+  .section-label {
+    @apply font-mono text-[11px] uppercase tracking-[0.28em] text-muted;
+  }
+
+  .headline-display {
+    @apply font-display text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-[0.95] tracking-[-0.03em] text-foreground;
+  }
+
+  .headline-editorial {
+    @apply font-display text-[clamp(2rem,4.5vw,4rem)] font-light leading-[1.05] tracking-[-0.025em] text-foreground;
+  }
+
+  .body-large {
+    @apply text-[clamp(1rem,1.4vw,1.25rem)] leading-[1.7] text-muted;
+  }
+
+  .luxury-button {
+    @apply relative inline-flex items-center justify-center overflow-hidden border border-accent-light/20 bg-transparent px-8 py-4 text-[13px] font-medium uppercase tracking-[0.22em] text-foreground transition-colors duration-[800ms] ease-luxury;
+  }
+
+  .luxury-button::before {
+    content: "";
+    @apply absolute inset-0 origin-left scale-x-0 bg-accent/10 transition-transform duration-[1200ms] ease-luxury;
+  }
+
+  .luxury-button:hover::before {
+    @apply scale-x-100;
+  }
+
+  .luxury-button:hover {
+    @apply border-accent/40 text-accent-light;
+  }
+
+  /* Mercedes-Benz editorial motion utilities */
+  .mb-line {
+    @apply gpu-layer;
+  }
+
+  .mb-line-inner {
+    @apply gpu-layer;
+    will-change: transform;
+  }
+
+  .mb-btn {
+    @apply transition-all duration-[1000ms] ease-luxury;
+  }
+
+  .mb-btn:hover {
+    @apply border-accent/50 tracking-[0.26em];
+  }
+
+  .mb-scroll-line {
+    animation: mbScrollPulse 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+
+  .mb-nav-link:hover span:first-child {
+    @apply text-accent-light;
+  }
+
+  .section-pad {
+    @apply px-[clamp(1.25rem,4vw,4rem)] py-section;
+  }
+
+  .gpu-layer {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .mask-reveal {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    @apply sr-only;
+  }
+
+  @keyframes mbScrollPulse {
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scaleY(0.85);
+    }
+    50% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,1488 @@
+/* ==========================================================================
+   ARZWARE — styles.css
+   Complete stylesheet: base + mascot + animations + responsive
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. CUSTOM PROPERTIES
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Palette */
+  --black: #050505;
+  --black-2: #0b0b0a;
+  --paper: #f4efe5;
+  --ink: #f6f0e7;
+  --muted: #8d8780;
+  --muted-2: #b7afa4;
+  --line: rgba(246, 240, 231, 0.14);
+  --line-2: rgba(246, 240, 231, 0.28);
+  --gold: #d69136;
+  --gold-2: #ffbd64;
+  --cyan: #8ee9ff;
+  --green: #b7f3cd;
+  --danger: #ff816d;
+
+  /* Typography */
+  --font: Geist, system-ui, -apple-system, Segoe UI, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --serif: 'Instrument Serif', Georgia, serif;
+
+  /* Mascot */
+  --mascot-bob: 8px;
+  --mascot-bob-speed: 5s;
+  --mascot-shimmer-speed: 8s;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. RESET & BASE
+   -------------------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--black);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--black);
+  overflow-x: hidden;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient background glow */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(214, 145, 54, 0.16), transparent 34rem),
+    radial-gradient(circle at 82% 22%, rgba(142, 233, 255, 0.08), transparent 30rem),
+    linear-gradient(180deg, #050505, #090807 42%, #050505 80%);
+}
+
+/* Noise overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.045;
+  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="256" height="256" filter="url(%23n)" opacity=".6"/%3E%3C/svg%3E');
+  mix-blend-mode: screen;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. LAYOUT UTILITIES
+   -------------------------------------------------------------------------- */
+
+.page {
+  position: relative;
+  z-index: 2;
+}
+
+.container {
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.mono {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.muted {
+  color: var(--muted-2);
+}
+
+
+/* --------------------------------------------------------------------------
+   4. NAVIGATION
+   -------------------------------------------------------------------------- */
+
+.nav {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 28px clamp(22px, 4vw, 58px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  mix-blend-mode: difference;
+  color: white;
+  pointer-events: none;
+}
+
+.nav > * {
+  pointer-events: auto;
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-size: 13px;
+}
+
+.wordmark img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(1.6);
+}
+
+.nav a:last-child {
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 5px;
+}
+
+.nav a:last-child:hover {
+  color: var(--gold-2);
+}
+
+
+/* --------------------------------------------------------------------------
+   5. HERO SECTION
+   -------------------------------------------------------------------------- */
+
+.hero {
+  min-height: 96vh;
+  position: relative;
+  display: grid;
+  align-items: center;
+  padding: 128px 0 90px;
+  overflow: hidden;
+}
+
+/* Gold accent line on left side */
+.hero::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10%;
+  width: 2px;
+  height: 80%;
+  background: linear-gradient(
+    transparent,
+    var(--gold) 20%,
+    var(--gold) 80%,
+    transparent
+  );
+  z-index: 4;
+}
+
+.hero-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.hero h1 {
+  font-size: clamp(72px, 11vw, 154px);
+  line-height: 0.82;
+  letter-spacing: -0.09em;
+  margin: 0;
+  max-width: 930px;
+}
+
+.hero .thin {
+  display: block;
+  font-weight: 300;
+  color: #9d968e;
+}
+
+.hero .strong {
+  display: block;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 3;
+}
+
+.hero-copy p {
+  margin: 26px 0 0;
+  max-width: 620px;
+  color: #bfb7ad;
+  font-size: clamp(17px, 1.45vw, 21px);
+  line-height: 1.6;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+  color: #8d8780;
+}
+
+.hero-meta span {
+  display: block;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+.hero-stamp {
+  position: absolute;
+  right: 5vw;
+  bottom: 14vh;
+  color: #77706a;
+  text-align: right;
+}
+
+.hero-stamp b {
+  display: block;
+  color: var(--ink);
+  font-size: clamp(28px, 3vw, 48px);
+  letter-spacing: -0.06em;
+  margin-bottom: 8px;
+}
+
+.scroll-line {
+  position: absolute;
+  left: clamp(22px, 4vw, 58px);
+  bottom: 58px;
+  width: 1px;
+  height: 120px;
+  background: linear-gradient(transparent, var(--gold), transparent);
+}
+
+
+/* --------------------------------------------------------------------------
+   6. MASCOT — HERO
+   -------------------------------------------------------------------------- */
+
+.mascot-hero {
+  position: absolute;
+  right: 2vw;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: clamp(280px, 38vw, 520px);
+}
+
+.mascot-hero__image {
+  width: 100%;
+  filter: drop-shadow(0 0 40px rgba(142, 233, 255, 0.3));
+  animation:
+    mascotBob var(--mascot-bob-speed) ease-in-out infinite,
+    mascotShimmer var(--mascot-shimmer-speed) ease-in-out infinite;
+}
+
+.mascot-hero__glow {
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(142, 233, 255, 0.12) 0%,
+    rgba(214, 145, 54, 0.06) 40%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: -1;
+  animation: glowPulse 6s ease-in-out infinite;
+}
+
+#particles-canvas {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. MASCOT — SCROLL COMPANION
+   -------------------------------------------------------------------------- */
+
+.mascot-companion {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.mascot-companion.active {
+  opacity: 1;
+}
+
+.mascot-companion.active .mascot-companion__image {
+  animation: companionBreathe 3s ease-in-out infinite;
+}
+
+.mascot-companion__image {
+  width: 100%;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 12px rgba(142, 233, 255, 0.4));
+}
+
+
+/* --------------------------------------------------------------------------
+   8. MASCOT — SERVICE CARD
+   -------------------------------------------------------------------------- */
+
+.service {
+  position: relative;
+}
+
+.mascot-card {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  transform: scale(0.8) translateY(8px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.mascot-card img {
+  width: 100%;
+}
+
+.service:hover .mascot-card {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+
+/* --------------------------------------------------------------------------
+   9. MASCOT — CONTACT
+   -------------------------------------------------------------------------- */
+
+.contact-heading {
+  position: relative;
+}
+
+.contact-heading h2 {
+  position: relative;
+  z-index: 2;
+}
+
+.mascot-contact {
+  position: absolute;
+  right: -40px;
+  top: -80px;
+  width: clamp(100px, 14vw, 180px);
+  opacity: 0;
+  transform: translateY(40px) rotate(10deg);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mascot-contact.visible {
+  opacity: 0.85;
+  transform: translateY(0) rotate(5deg);
+}
+
+.mascot-contact img {
+  width: 100%;
+  filter: drop-shadow(0 0 20px rgba(142, 233, 255, 0.2));
+}
+
+
+/* --------------------------------------------------------------------------
+   10. MASCOT — LIGHT SECTION VARIANT
+   -------------------------------------------------------------------------- */
+
+.paper .mascot-companion.active .mascot-companion__image {
+  filter: brightness(0.3) saturate(0.8) drop-shadow(0 0 12px rgba(214, 145, 54, 0.4));
+}
+
+
+/* --------------------------------------------------------------------------
+   11. KEYFRAME ANIMATIONS
+   -------------------------------------------------------------------------- */
+
+@keyframes mascotBob {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(calc(var(--mascot-bob) * -1)) rotate(0.5deg);
+  }
+  75% {
+    transform: translateY(var(--mascot-bob)) rotate(-0.5deg);
+  }
+}
+
+@keyframes mascotShimmer {
+  0%, 100% {
+    filter: drop-shadow(0 0 40px rgba(142, 233, 255, 0.3)) hue-rotate(0deg);
+  }
+  50% {
+    filter: drop-shadow(0 0 50px rgba(142, 233, 255, 0.5)) hue-rotate(15deg);
+  }
+}
+
+@keyframes mascotEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(120vh) scale(0.3) rotate(15deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-5%) scale(1.08) rotate(-3deg);
+  }
+  80% {
+    transform: translateY(2%) scale(0.97) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes trailFade {
+  0% {
+    opacity: 0.8;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.3);
+  }
+}
+
+@keyframes companionBreathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   12. INTRO SECTION
+   -------------------------------------------------------------------------- */
+
+.intro {
+  padding: 92px 0 110px;
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: 54px;
+  align-items: start;
+}
+
+.intro-label {
+  font-family: var(--serif);
+  font-size: clamp(42px, 5vw, 82px);
+  line-height: 0.9;
+  color: #8f887e;
+  letter-spacing: -0.055em;
+  margin: 0;
+}
+
+.intro-left {
+  position: relative;
+}
+
+.intro-right {
+  /* matches previous .reveal div behavior */
+}
+
+
+/* --------------------------------------------------------------------------
+   12b. MASCOT — INTRO
+   -------------------------------------------------------------------------- */
+
+.mascot-intro {
+  position: relative;
+  width: clamp(160px, 22vw, 260px);
+  margin-top: 32px;
+  /* Initial state — GSAP animates this */
+  opacity: 0;
+  transform: translateX(-60px) scale(0.7) rotate(-10deg);
+}
+
+.mascot-intro__image {
+  width: 100%;
+  filter: drop-shadow(0 0 32px rgba(142, 233, 255, 0.28));
+  animation: mascotBob var(--mascot-bob-speed) ease-in-out infinite;
+}
+
+.mascot-intro__glow {
+  position: absolute;
+  inset: -35%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(142, 233, 255, 0.1) 0%,
+    rgba(214, 145, 54, 0.05) 45%,
+    transparent 70%
+  );
+  filter: blur(30px);
+  pointer-events: none;
+  z-index: -1;
+  animation: glowPulse 6s ease-in-out infinite;
+}
+
+.mascot-intro__trail {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 40px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(142, 233, 255, 0.12) 0%,
+    rgba(183, 160, 255, 0.06) 50%,
+    transparent 80%
+  );
+  filter: blur(12px);
+  pointer-events: none;
+  animation: trailPulse 3s ease-in-out infinite;
+}
+
+@keyframes trailPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translateX(-50%) scaleX(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateX(-50%) scaleX(1.2);
+  }
+}
+
+.intro h2 {
+  font-size: clamp(38px, 5.2vw, 78px);
+  line-height: 1.04;
+  letter-spacing: -0.065em;
+  margin: 0 0 28px;
+  max-width: 900px;
+}
+
+.intro p {
+  font-size: 18px;
+  line-height: 1.75;
+  color: #bcb3a9;
+  max-width: 780px;
+  margin: 0 0 18px;
+}
+
+.text-link {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.text-link::before {
+  content: "";
+  width: 46px;
+  height: 1px;
+  background: var(--gold);
+  animation: textLinkPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes textLinkPulse {
+  0%, 100% {
+    opacity: 1;
+    width: 46px;
+  }
+  50% {
+    opacity: 0.5;
+    width: 52px;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   13. WORK / PROJECTS SECTION
+   -------------------------------------------------------------------------- */
+
+.work {
+  min-height: 78vh;
+  padding: 88px 0 104px;
+  position: relative;
+}
+
+.work::before {
+  content: "SELECTED SYSTEMS";
+  position: absolute;
+  top: 46px;
+  left: clamp(24px, 5vw, 70px);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: 0.32fr 1fr 0.42fr;
+  gap: 42px;
+  align-items: end;
+  border-top: 1px solid var(--line);
+  padding-top: 74px;
+}
+
+.count {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: #807970;
+}
+
+.count strong {
+  color: var(--gold);
+  font-size: 42px;
+  letter-spacing: -0.08em;
+}
+
+.project h3 {
+  font-family: var(--serif);
+  font-size: clamp(56px, 8vw, 118px);
+  font-weight: 400;
+  line-height: 0.86;
+  color: #978f86;
+  letter-spacing: -0.06em;
+  margin: 0 0 24px;
+}
+
+.project h2 {
+  font-size: clamp(34px, 4.6vw, 72px);
+  line-height: 0.96;
+  letter-spacing: -0.07em;
+  margin: 0 0 22px;
+  max-width: 780px;
+}
+
+.rule {
+  width: 120px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0 0 26px;
+}
+
+.project p {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #bdb4aa;
+  max-width: 680px;
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.tags span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #958d83;
+}
+
+.visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 38px;
+  border: 1px solid var(--line-2);
+  border-left-color: var(--gold);
+  padding: 16px 22px;
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  position: relative;
+  overflow: hidden;
+}
+
+.visit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(214, 145, 54, 0.12),
+    rgba(214, 145, 54, 0.04) 60%,
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.visit:hover::before {
+  transform: translateX(0);
+}
+
+.visit:hover {
+  background: rgba(214, 145, 54, 0.08);
+}
+
+.metric {
+  border: 1px solid var(--line);
+  padding: 28px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.metric b {
+  font-size: clamp(58px, 8vw, 110px);
+  letter-spacing: -0.09em;
+  color: var(--ink);
+  display: block;
+  line-height: 0.9;
+}
+
+.metric span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #8f877e;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+
+/* --------------------------------------------------------------------------
+   14. PAPER (LIGHT) SECTION
+   -------------------------------------------------------------------------- */
+
+.paper {
+  background: var(--paper);
+  color: #10100f;
+  min-height: 62vh;
+  display: grid;
+  align-items: center;
+  padding: 84px 0;
+}
+
+.paper .container {
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.paper h2 {
+  font-size: clamp(46px, 7vw, 104px);
+  line-height: 0.9;
+  letter-spacing: -0.075em;
+  margin: 0;
+}
+
+.paper p {
+  font-size: clamp(20px, 2.3vw, 34px);
+  line-height: 1.28;
+  letter-spacing: -0.04em;
+  margin: 0;
+  color: #292621;
+}
+
+.paper .mono {
+  color: #8c5b20;
+}
+
+.systems-list {
+  display: grid;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.systems-list div {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 18px;
+  border-top: 1px solid rgba(0, 0, 0, 0.18);
+  padding-top: 17px;
+}
+
+.systems-list b {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #9c641e;
+}
+
+.systems-list span {
+  color: #3b352f;
+  line-height: 1.55;
+}
+
+
+/* --------------------------------------------------------------------------
+   15. SERVICES SECTION
+   -------------------------------------------------------------------------- */
+
+.services {
+  padding: 104px 0;
+}
+
+.service-head {
+  display: grid;
+  grid-template-columns: 0.45fr 1fr;
+  gap: 52px;
+  align-items: end;
+  margin-bottom: 60px;
+}
+
+.service-head h2 {
+  font-size: clamp(54px, 8vw, 120px);
+  line-height: 0.86;
+  letter-spacing: -0.085em;
+  margin: 0;
+}
+
+.service-head p {
+  font-size: 20px;
+  line-height: 1.65;
+  color: #b8afa5;
+  margin: 0;
+  max-width: 640px;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  /* Hidden initially — GSAP reveals it with the cards */
+  opacity: 0;
+}
+
+.service {
+  min-height: 330px;
+  background: #070707;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: 0.25s ease;
+}
+
+.service:hover {
+  background: #0e0d0c;
+}
+
+.service small {
+  font-family: var(--mono);
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  font-size: 11px;
+}
+
+.service h3 {
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  margin: 40px 0 16px;
+}
+
+.service p {
+  color: #aaa199;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.service em {
+  font-style: normal;
+  color: #6f6861;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+
+/* --------------------------------------------------------------------------
+   16. CONTACT SECTION
+   -------------------------------------------------------------------------- */
+
+.contact {
+  padding: 104px 0 70px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.82fr;
+  gap: 70px;
+  align-items: start;
+}
+
+.contact h2 {
+  font-size: clamp(56px, 8vw, 122px);
+  line-height: 0.86;
+  letter-spacing: -0.085em;
+  margin: 0 0 40px;
+}
+
+.contact h2 span {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+.form {
+  display: grid;
+  gap: 28px;
+}
+
+.field {
+  border-bottom: 1px solid var(--line-2);
+  padding-bottom: 13px;
+}
+
+.field label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8c847b;
+  margin-bottom: 8px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 19px;
+  padding: 8px 0;
+}
+
+.field textarea {
+  min-height: 98px;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #5e5852;
+}
+
+.send {
+  margin-top: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  font-family: var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  display: inline-flex;
+  gap: 14px;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.send::before {
+  content: "";
+  width: 58px;
+  height: 1px;
+  background: var(--gold);
+  transition: transform 0.3s ease;
+}
+
+.send:hover::before {
+  transform: translateX(8px);
+}
+
+.contact-side {
+  padding-top: 120px;
+}
+
+.contact-side .block {
+  border-top: 1px solid var(--line);
+  padding: 20px 0 24px;
+}
+
+.contact-side b {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #8b837b;
+  margin-bottom: 10px;
+}
+
+.contact-side a,
+.contact-side span {
+  font-size: 20px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+
+/* --------------------------------------------------------------------------
+   17. FORM SUCCESS & DYNAMIC ELEMENTS
+   -------------------------------------------------------------------------- */
+
+.form-success {
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--gold);
+}
+
+.form-success__icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.form-success__title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 48px);
+  color: var(--gold);
+  margin: 0 0 12px;
+}
+
+.form-success__text {
+  font-family: var(--font);
+  font-size: 18px;
+  color: var(--muted-2);
+  margin: 0;
+}
+
+/* Celebration particles (spawned by JS on form submit) */
+.celebration-particle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Button ripple effect (spawned by JS on CTA hover) */
+.btn-ripple {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(214, 145, 54, 0.18),
+    transparent 70%
+  );
+  transform: translate(-50%, -50%) scale(0);
+  animation: rippleExpand 0.6s ease-out forwards;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes rippleExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Field focus state (toggled by JS) */
+.field.focused {
+  border-bottom-color: var(--gold);
+}
+
+.field.focused label {
+  color: var(--gold);
+}
+
+/* Nav scrolled state */
+.nav.scrolled {
+  background: rgba(5, 5, 5, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Light section body class (toggled by JS for companion color shift) */
+.in-light-section .mascot-companion__image {
+  filter: brightness(0.3) saturate(0.8) drop-shadow(0 0 12px rgba(214, 145, 54, 0.4));
+  transition: filter 0.5s ease;
+}
+
+
+/* --------------------------------------------------------------------------
+   18. FOOTER
+   -------------------------------------------------------------------------- */
+
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  color: #77706a;
+}
+
+.footer strong {
+  color: var(--ink);
+  font-family: var(--mono);
+  letter-spacing: 0.14em;
+}
+
+.footer span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+
+/* --------------------------------------------------------------------------
+   19. REVEAL ANIMATIONS
+   -------------------------------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal.from-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.reveal.from-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.reveal.from-left.visible,
+.reveal.from-right.visible {
+  opacity: 1;
+  transform: translate(0);
+}
+
+/* Stagger utility */
+.reveal[data-delay='1'] {
+  transition-delay: 0.1s;
+}
+
+.reveal[data-delay='2'] {
+  transition-delay: 0.2s;
+}
+
+.reveal[data-delay='3'] {
+  transition-delay: 0.3s;
+}
+
+.reveal[data-delay='4'] {
+  transition-delay: 0.4s;
+}
+
+.reveal[data-delay='5'] {
+  transition-delay: 0.5s;
+}
+
+
+/* --------------------------------------------------------------------------
+   20. RESPONSIVE — TABLET (≤ 980px)
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 980px) {
+  .hero {
+    min-height: auto;
+    padding-top: 120px;
+  }
+
+  .hero-grid,
+  .intro-grid,
+  .work-grid,
+  .paper .container,
+  .service-head,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-grid {
+    gap: 32px;
+    padding-top: 80px;
+  }
+
+  .metric {
+    max-width: 360px;
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-side {
+    padding-top: 20px;
+  }
+
+  .paper {
+    padding: 90px 0;
+  }
+
+  .systems-list div {
+    grid-template-columns: 1fr;
+  }
+
+  .nav {
+    padding: 22px;
+  }
+
+  .nav .wordmark span {
+    display: none;
+  }
+
+  /* Mascot hero — stack below text */
+  .mascot-hero {
+    position: relative;
+    top: auto;
+    right: auto;
+    transform: none;
+    width: clamp(200px, 50vw, 320px);
+    margin: 0 auto;
+  }
+
+  /* Intro mascot — center below text on tablet */
+  .mascot-intro {
+    margin: 24px auto 0;
+  }
+
+  /* Contact mascot — tuck in closer */
+  .mascot-contact {
+    right: 0;
+    top: -50px;
+    width: clamp(80px, 12vw, 140px);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   21. RESPONSIVE — MOBILE (≤ 620px)
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 620px) {
+  .container {
+    width: min(100% - 28px, 1200px);
+  }
+
+  .hero h1 {
+    font-size: 64px;
+  }
+
+  .hero-meta {
+    gap: 18px;
+  }
+
+  .intro,
+  .services,
+  .contact {
+    padding: 82px 0;
+  }
+
+  .work {
+    padding: 88px 0;
+  }
+
+  .project h3 {
+    font-size: 64px;
+  }
+
+  .project h2 {
+    font-size: 38px;
+  }
+
+  .paper h2 {
+    font-size: 56px;
+  }
+
+  .footer {
+    display: grid;
+  }
+
+  .nav {
+    mix-blend-mode: normal;
+    background: rgba(5, 5, 5, 0.72);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Mascot sizing — mobile */
+  .mascot-hero {
+    width: 60vw;
+    max-width: 280px;
+  }
+
+  .mascot-companion {
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .mascot-card {
+    display: none;
+  }
+
+  .mascot-contact {
+    width: 80px;
+    right: 0;
+    top: -40px;
+  }
+
+  .mascot-intro {
+    width: clamp(120px, 40vw, 200px);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   22. REDUCED MOTION
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal.from-left,
+  .reveal.from-right {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Keep mascot visible but static */
+  .mascot-hero__image {
+    animation: none !important;
+    filter: drop-shadow(0 0 40px rgba(142, 233, 255, 0.3));
+  }
+
+  .mascot-hero__glow {
+    animation: none !important;
+    opacity: 0.6;
+  }
+
+  /* Hide scroll companion entirely */
+  .mascot-companion {
+    display: none;
+  }
+
+  /* Disable card hover transitions */
+  .mascot-card {
+    transition: none !important;
+  }
+
+  .mascot-contact {
+    opacity: 1;
+    transform: none;
+    transition: none !important;
+  }
+}
