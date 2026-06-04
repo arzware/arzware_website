@@ -1,12 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useState } from "react";
 import { Navigation } from "@/components/layout/Navigation";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { DeviceInit } from "@/components/layout/DeviceInit";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ProblemSection } from "@/components/sections/ProblemSection";
+import { Preloader } from "@/components/layout/Preloader";
 
 const SceneLayer = dynamic(
   () =>
@@ -80,27 +82,41 @@ const Footer = dynamic(
 );
 
 export function ExperiencePage() {
+  const [ready, setReady] = useState(false);
+
   return (
-    <SmoothScroll>
-      <DeviceInit />
-      <ScrollProgress />
-      <SceneLayer />
-      <Navigation />
+    <>
+      <Preloader onComplete={() => setReady(true)} />
 
-      <main className="relative z-10">
-        <HeroSection />
-        <ProblemSection />
-        <TransformationEngineSection />
-        <ServicesSection />
-        <HowWeWorkSection />
-        <CaseStudiesSection />
-        <OperatingSystemSection />
-        <MetricsSection />
-        <FounderSection />
-        <FinalCTASection />
-      </main>
+      <div
+        style={{
+          opacity: ready ? 1 : 0,
+          transition: "opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+          pointerEvents: ready ? "auto" : "none",
+        }}
+      >
+        <SmoothScroll>
+          <DeviceInit />
+          <ScrollProgress />
+          <SceneLayer />
+          <Navigation />
 
-      <Footer />
-    </SmoothScroll>
+          <main className="relative z-10">
+            <HeroSection />
+            <ProblemSection />
+            <TransformationEngineSection />
+            <ServicesSection />
+            <HowWeWorkSection />
+            <CaseStudiesSection />
+            <OperatingSystemSection />
+            <MetricsSection />
+            <FounderSection />
+            <FinalCTASection />
+          </main>
+
+          <Footer />
+        </SmoothScroll>
+      </div>
+    </>
   );
 }
