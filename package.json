@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "opennext:deploy": "opennextjs-cloudflare deploy",
+    "opennext:build": "opennextjs-cloudflare build",
+    "opennext:deploy": "npm run opennext:build && opennextjs-cloudflare deploy",
     "deploy": "npm run build && npm run opennext:deploy",
     "dev": "next dev",
     "start": "next start",
