@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "arzware-landing-page",
+  "name": "arzware",
   "compatibility_date": "2026-06-04",
   "compatibility_flags": [
     "nodejs_compat"
@@ -13,7 +13,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "arzware-landing-page"
+      "service": "arzware"
     }
   ],
   "r2_buckets": [
